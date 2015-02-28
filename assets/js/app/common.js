@@ -8,6 +8,25 @@
      */
     return {
         /**
+         * 创建并初始化事件，可以将数据设置到事件对象上。
+         *
+         * @public
+         * @param {string} eventType 事件类型。
+         * @param {boolean} canBubble 指定事件是否可以冒泡。
+         * @param {boolean} cancelBubble 指定事件是否可以被取消。
+         * @param {Object=} data 事件对象要携带的数据。
+         */
+        createEvent: function (eventType, canBubble, cancelBubble, data) {
+            var evt = document.createEvent('Events');
+            evt.initEvent(eventType, canBubble, cancelBubble);
+
+            if (typeof data !== 'undefined') {
+                evt.data = data;
+            }
+
+            return evt;
+        },
+        /**
          * String相关处理。
          *
          * @namespace
