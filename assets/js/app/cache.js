@@ -109,10 +109,11 @@ define(['jquery'], function ($) {
     Cache.prototype.removeAll = function (reg) {
         var removeCount = 0;
 
-        for (var key in window.localStorage) {
-            if (window.localStorage.hasOwnProperty(key)) {
+        var ls = window.localStorage;
+        for (var key in ls) {
+            if (ls.hasOwnProperty(key)) {
                 if (reg.test(key) == true) {
-                    window.localStorage.removeItem(key);
+                    ls.removeItem(key);
                     removeCount += 1;
                 }
             }
