@@ -1,26 +1,20 @@
 require.config({
 	paths: {
+		backbone: 'backbone-min',
 		jquery: 'jquery-1.9.1.min',
 		underscore: 'underscore-min'
-	},
-	shim: {
-		underscore: {
-			exports: '_'
-		}
 	}
 });
 
 require(
 	[
-		'app/cache', 
-		'app/templates',
-		'app/template-helper'
+		'app/views/notification-list'
 	],
-	function (Cache, Templates, TemplateHelper) {
-		var cache = new Cache();
-		cache.set('test', 'Testing cache 1.');
-		Templates.init();
-		TemplateHelper.register('Person', 'phoneReg', /(\d{3})(\d{4})(\d{4})/);
-		console.dir(TemplateHelper);
+	function (NotificationList) {
+		var notificationList = new NotificationList({
+			id: 'app-notification-list',
+			el: '#list-container'
+		});
+		notificationList.render();
 	}
 );
