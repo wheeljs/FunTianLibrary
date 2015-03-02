@@ -43,12 +43,12 @@ define(['jquery'], function ($) {
     };
 
     /**
-     * 设置缓存，key指定了缓存的键，value指定了缓存的值，invalidSeconds指定缓存的过期时间。
+     * 设置缓存，key指定了缓存的键，value指定了缓存的值，options指定了本次的配置。
      *
      * @public
      * @param {string} key 缓存的键。
      * @param {*} value 缓存的值。
-     * @param {Object} options 本次设置使用的配置，优先级高于实例的配置。
+     * @param {Object=} options 本次设置使用的配置，优先级高于实例的配置。
      * @param {number} options.invalidSeconds 缓存过期时间（分钟），0为永不过期，设为永不过期的缓存项只能通过调用remove或removeAll清除。
      * @return {boolean} 是否成功加入缓存，成功返回true，否则返回false。
      */
