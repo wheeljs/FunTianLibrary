@@ -6,27 +6,40 @@ define(
 	], 
 	function ($, _, Common) {
 		'use strict';
-		
+
+		// Change 'templateSettings'
+		_.templateSettings = {
+			escape: /{%-([\s\S]+?)%}/g,
+			evaluate: /{%([\s\S]+?)%}/g,
+			interpolate : /\{%=([\s\S]+?)%\}/g
+		};
+
+		var initialized = false;
 		/**
 		 * 预编译并保存需要缓存的模板。
 		 *
-		 * @module templates
+		 * @exports templates
 		 */
-		return {
+		var Templates = {
 			/**
 			 * 扫描并缓存带有cache-template属性的模板，并将所有缓存的模板存放到对象上。
 			 * @public
 			 */
 			init: function () {
 				var _this = this;
-				
-				var scripts = $('script[type="text/template"][cache-template]');
-				scripts.each(function (index, item) {
-					var id = item.id;
-					var name = id.replace(/^tpl-/, '');
-					var tpl = _.template(item.innerHTML);
-					_this.add(name, tpl);
-				});
+
+				if (initialized !== true) {
+					console.log('Initializing and caching templates');
+					var scripts = $('script[type="text/template"][cache-template]');
+					scripts.each(function (index, item) {
+						var id = item.id;
+						var name = id.replace(/^tpl-/, '');
+						var tpl = _.template(item.innerHTML);
+						_this.add(name, tpl);
+					});
+
+					initialized = true;
+				}
 			},
 			/**
 			 * 检查模板名称是否为有效名称。
@@ -62,5 +75,9 @@ define(
 				}
 			}
 		};
+
+		Templates.init();
+
+		return Templates;
 	}
 );
