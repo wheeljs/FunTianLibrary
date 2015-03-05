@@ -8,9 +8,8 @@ define(['jquery'], function ($) {
     /**
      * 可以切换状态的按钮。
      *
-     * @alias window.LoaderButton
      * @class
-     * @constructor
+     * @exports loader-button
      * @param element {*} 允许切换状态的按钮。
      * @param options {Object} 实例化按钮的配置项。
      * @param options.initState {LoaderButton.State} 按钮的初始状态。
