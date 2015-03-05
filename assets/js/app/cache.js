@@ -61,18 +61,18 @@ define(['jquery'], function ($) {
             options = {};
         }
 
-        var opts = this.options;
+        var opts = $.extend({}, this.options, options);
 
         var val = {
             'invalidtime': new Date().getTime(),
             'obj': value
         };
-        if (isNaN(options.invalidSeconds) == false) {
-            if (options.invalidSeconds == 0) {
+        if (isNaN(opts.invalidSeconds) == false) {
+            if (opts.invalidSeconds == 0) {
                 val.invalidtime = 0;
             }
             else {
-                val.invalidtime += (options.invalidSeconds * 1000);
+                val.invalidtime += (opts.invalidSeconds * 1000);
             }
         }
         else {

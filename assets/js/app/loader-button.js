@@ -156,7 +156,6 @@ define(['jquery'], function ($) {
     LoaderButton.prototype.render = function (configure) {
         var type = this.options.type;
         var $el = this.$el;
-        console.log(configure);
 
         var $icon = $el.find('[btn-icon]');
         var $text = $el.find('[btn-text]');
