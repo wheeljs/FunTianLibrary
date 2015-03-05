@@ -103,11 +103,15 @@ define(['jquery'], function ($) {
      * 从缓存中移除所有与参数匹配的项。
      *
      * @public
-     * @param {RegExp} reg 确定要移除的项，正则表达式。
+     * @param {RegExp=} reg 一个指定要删除项的正则表达式，如果为null，默认为/.+/。
      * @return {number} 移除项的数量。
      */
     Cache.prototype.removeAll = function (reg) {
         var removeCount = 0;
+
+        if (typeof reg === 'undefined') {
+            reg = /.+/;
+        }
 
         var ls = window.localStorage;
         for (var key in ls) {
