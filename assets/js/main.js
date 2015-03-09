@@ -9,16 +9,9 @@ require.config({
 require(
 	[
 		'jquery',
-		'app/views/notification-list',
-		'app/loader-button'
+		'app/ui/loader-button'
 	],
-	function ($, NotificationList, LoaderButton) {
-		var notificationList = new NotificationList({
-			id: 'app-notification-list',
-			el: '#list-container'
-		});
-		notificationList.render();
-
+	function ($, LoaderButton) {
 		var proxy = new LoaderButton($('#js-all-button'), {
 			type: LoaderButton.Types.ALL,
 			configure: {
@@ -34,7 +27,13 @@ require(
 					iconClass: 'icon-ok',
 					text: 'Finish'
 				}
+			},
+			onInitialize: function (data) {
+				console.group('options.onInitialize');
+				console.dir(data);
+				console.groupEnd('options.onInitialize');
 			}
 		});
+
 	}
 );
