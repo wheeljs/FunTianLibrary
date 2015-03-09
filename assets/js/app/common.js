@@ -27,6 +27,22 @@
             return evt;
         },
         /**
+         * 实现两个类的继承关系，可以使用instanceof运算符进行判断。调用该方法会使用Parent.prototype覆盖Child.prototype，
+         * 所以当子类需要添加方法时，请在添加方法之前调用该方法实现继承关系。
+         *
+         * @public
+         * @param Child 子类。
+         * @param Parent 父类。
+         */
+        extend: function (Child, Parent) {
+            var F = function () {
+            };
+            F.prototype = Parent.prototype;
+            Child.prototype = new F();
+            Child.prototype.constructor = Child;
+            Child.super = Parent.prototype;
+        },
+        /**
          * String相关处理。
          *
          * @namespace
