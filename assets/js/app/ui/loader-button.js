@@ -1,12 +1,12 @@
 /**
- * @file 可以切换状态的按钮，AMD 版本。
+ * @file 允许切换状态并对不同状态做出不同响应的按钮。
  * @author FunTian
  */
 define(
     [
-        '../../jquery-1.9.1.min',
-        '../common',
-        'ui-base'
+        'jquery',
+        'app/common',
+        'app/ui/ui-base'
     ],
     function ($, Common, UIBase) {
         'use strict';
@@ -15,7 +15,7 @@ define(
          * 可以切换状态的按钮。
          *
          * @class
-         * @extend ui/UIBase
+         * @extends ui-base
          * @exports loader-button
          * @param element {*} 允许切换状态的按钮。
          * @param options {Object} 实例化按钮的配置项。
@@ -23,11 +23,13 @@ define(
          * @param options.type {LoaderButton.Types} 按钮的切换方式。
          * @param options.configure {Map.<LoaderButton.Configure>}
          * @param options.onLoadExecute {Function():$.Deferred} 在状态为LOADING时执行的函数，必须返回一个$.Deferred对象。
-         *
          */
         function LoaderButton(element, options) {
+            // 调用父类方法合并选项
+            this.mergeOptions(true, {}, LoaderButton.defaults, options);
+
             var _this = this;
-            var opts = $.extend({}, LoaderButton.defaults, options);
+            var opts = this.options;
 
             if (this instanceof Window == true) {
                 return new LoaderButton(options);
@@ -72,7 +74,6 @@ define(
                 }).attr('binded', true);
             }
             this.$el = element;
-            this.options = opts;
             this._state = opts.initState;
             this.init();
         }
