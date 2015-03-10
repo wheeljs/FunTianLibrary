@@ -28,10 +28,20 @@ require(
 					text: 'Finish'
 				}
 			},
-			onInitialize: function (data) {
+			onInitialized: function (data) {
 				console.group('options.onInitialize');
 				console.dir(data);
 				console.groupEnd('options.onInitialize');
+			},
+			onStateChange: function (data) {
+				console.group('options.onStateChange');
+				console.dir(data);
+				console.groupEnd('options.onStateChange');
+			},
+			onStateChanged: function (data) {
+				console.group('options.onStateChanged');
+				console.dir(data);
+				console.groupEnd('options.onStateChanged');
 			}
 		});
 
