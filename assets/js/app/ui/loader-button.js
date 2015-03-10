@@ -61,20 +61,30 @@ define(
                             newState = LoaderButton.State.NORMAL;
                             break;
                     }
-                    _this._state = newState;
+
+                    _this.setState(newState);
                     _this.render(_this.getStateConfigure());
 
-                    if (_this._state === LoaderButton.State.LOADING) {
+                    if (_this._state === LoaderButton.State.LOADING
+                        && _this._proxyPromise == null) {
                         var promise = _this.options.onLoadExecute();
                         promise.always(function () {
-                            _this._state = LoaderButton.State.FINISHED;
+                            _this.setState(LoaderButton.State.FINISHED);
+                            _this._proxyPromise = null;
                            _this.render(_this.getStateConfigure());
                         });
+                        _this._proxyPromise = promise;
+                    }
+                    else {
+
                     }
                 }).attr('binded', true);
             }
             this.$el = element;
-            this._state = opts.initState;
+            this.setState(opts.initState, {
+                triggerBefore: false,
+                triggerAfter: false
+            });
             this.init();
         }
 
@@ -144,7 +154,7 @@ define(
 
             this.render(cfg);
 
-            this.dispatch('initialize', {});
+            this.dispatch('initialized', {});
         };
 
         /**
@@ -176,6 +186,40 @@ define(
             if (type === LoaderButton.Types.TEXT
                 || type === LoaderButton.Types.ALL) {
                 $text.text(configure.text);
+            }
+
+            this.dispatch('rendered', {});
+        };
+
+        /**
+         * 设置当前状态，可以指定是否触发相关回调。
+         *
+         * @private
+         * @param {LoaderButton.State} newState 按钮的当前状态。
+         * @param {Object} options 设置状态的相关配置。
+         * @param {boolean} options.triggerBefore 是否触发'stateChange'事件。
+         * @param {boolean} options.triggerAfter 是否触发'stateChanged'事件。
+         */
+        LoaderButton.prototype.setState = function (newState, options) {
+            var prevState = this._state;
+
+            if (typeof options === 'undefined') {
+                options = {};
+            }
+
+            if (options.triggerBefore !== false) {
+                this.dispatch('stateChange', {
+                    prevState: prevState,
+                    currentState: newState
+                });
+            }
+
+            this._state = newState;
+
+            if (options.triggerAfter !== false) {
+                this.dispatch('stateChanged', {
+                    currentState: newState
+                })
             }
         };
 
