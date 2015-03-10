@@ -25,6 +25,7 @@ define(
         /**
          * 合并所有参数，第一个参数指定了是否是深拷贝。
          *
+         * @protected
          * @param {boolean} deepCopy 指定了是否进行深拷贝。
          * @param {Object=} source 源对象。
          * @param {...Object} others 将要合并到源对象的对象。
