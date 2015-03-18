@@ -20,7 +20,7 @@ require(
 					text: 'Click to load'
 				},
 				2: {
-					iconClass: 'icon-spin',
+					iconClass: 'icon-spinner icon-spin',
 					text: 'Loading'
 				},
 				4: {
