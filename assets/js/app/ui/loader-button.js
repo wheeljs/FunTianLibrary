@@ -20,7 +20,7 @@ define(
          * @param element {*} 允许切换状态的按钮。
          * @param options {Object} 实例化按钮的配置项。
          * @param options.initState {LoaderButton.State} 按钮的初始状态。
-         * @param options.type {LoaderButton.Types} 按钮的切换方式。
+         * @param options.type {LoaderButton.Types} 按钮的切换方式。当切换方式含有图标时，建议使用Font-Awesome图标库。
          * @param options.configure {Map.<LoaderButton.Configure>}
          * @param options.onLoadExecute {Function():$.Deferred} 在状态为LOADING时执行的函数，必须返回一个$.Deferred对象。
          */
