@@ -23,7 +23,7 @@ define(
         }
 
         /**
-         * 合并所有参数，第一个参数指定了是否是深拷贝。
+         * 合并所有参数，并设置实例的`options`属性。第一个参数指定了是否是深拷贝。
          *
          * @protected
          * @param {boolean} deepCopy 指定了是否进行深拷贝。
@@ -43,7 +43,7 @@ define(
          * @param {string} event 事件名称。调用回调函数时将首字母大写并添加`on`前缀，调用`trigger`方法时将添加`.ui`后缀。
          * @param {Object=} data 事件的数据。
          */
-        UIBase.prototype.dispatch = function (event, data) {
+        UIBase.prototype.fire = function (event, data) {
             if (typeof data === 'undefined') {
                 data = {};
             }

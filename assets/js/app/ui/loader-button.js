@@ -154,7 +154,7 @@ define(
 
             this.render(cfg);
 
-            this.dispatch('initialized', {});
+            this.fire('initialized', {});
         };
 
         /**
@@ -188,7 +188,7 @@ define(
                 $text.text(configure.text);
             }
 
-            this.dispatch('rendered', {});
+            this.fire('rendered', {});
         };
 
         /**
@@ -208,7 +208,7 @@ define(
             }
 
             if (options.triggerBefore !== false) {
-                this.dispatch('stateChange', {
+                this.fire('stateChange', {
                     prevState: prevState,
                     currentState: newState
                 });
@@ -217,7 +217,7 @@ define(
             this._state = newState;
 
             if (options.triggerAfter !== false) {
-                this.dispatch('stateChanged', {
+                this.fire('stateChanged', {
                     currentState: newState
                 })
             }
