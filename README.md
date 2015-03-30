@@ -12,12 +12,12 @@
 
 该项目主要包含以下工具（简单介绍），如不指明，则文件名即 AMD 模块名称：
 
-- [cache.js](#module-cache): 依赖jquery。基于 `localStorage` 的缓存工具。
+- cache.js: 依赖jquery。基于 `localStorage` 的缓存工具。
 
-- [common.js](#module-common): 通用工具类。
+- common.js: 通用工具类。
 
-- [loader-button.js](#module-loader-button): 依赖jquery。使按钮具有状态，不同的状态可以显示不同的图标和文字。
+- loader-button.js: 依赖jquery。使按钮具有状态，不同的状态可以显示不同的图标和文字。
 
-- [template-helper.js](#module-template-helper): 依赖common。模板的帮助方法类。
+- template-helper.js: 依赖common。模板的帮助方法类。
 
-- [templates.js](#module-template): 依赖common, jquery, underscore。自动编译并缓存需要的模板。
+- templates.js: 依赖common, jquery, underscore。自动编译并缓存需要的模板。
