@@ -32,7 +32,7 @@ define(
             var opts = this.options;
 
             if (this instanceof Window == true) {
-                return new LoaderButton(options);
+                return new LoaderButton(element, options);
             }
 
             // 处理type=LoaderButton.Types.TEXT时覆盖图标的问题
@@ -47,7 +47,7 @@ define(
                 opts.configure = conf;
             }
 
-            if (element.is('[binded]') === false) {
+            if (element.is('[binding]') === false) {
                 element.on('click', function () {
                     var state = _this._state;
                     var newState = state;
@@ -63,7 +63,6 @@ define(
                     }
 
                     _this.setState(newState);
-                    _this.render(_this.getStateConfigure());
 
                     if (_this._state === LoaderButton.State.LOADING
                         && _this._proxyPromise == null) {
@@ -71,19 +70,19 @@ define(
                         promise.always(function () {
                             _this.setState(LoaderButton.State.FINISHED);
                             _this._proxyPromise = null;
-                           _this.render(_this.getStateConfigure());
                         });
                         _this._proxyPromise = promise;
                     }
                     else {
 
                     }
-                }).attr('binded', true);
+                }).attr('binding', true);
             }
             this.$el = element;
             this.setState(opts.initState, {
                 triggerBefore: false,
-                triggerAfter: false
+                triggerAfter: false,
+                render: false
             });
             this.init();
         }
@@ -196,9 +195,10 @@ define(
          *
          * @private
          * @param {LoaderButton.State} newState 按钮的当前状态。
-         * @param {Object} options 设置状态的相关配置。
+         * @param {Object=} options 设置状态的相关配置。
          * @param {boolean} options.triggerBefore 是否触发'stateChange'事件。
          * @param {boolean} options.triggerAfter 是否触发'stateChanged'事件。
+         * @param {boolean} options.render 是否直接按照当前状态渲染按钮。
          */
         LoaderButton.prototype.setState = function (newState, options) {
             var prevState = this._state;
@@ -221,6 +221,10 @@ define(
                     currentState: newState
                 })
             }
+
+            if (options.render !== false) {
+                this.render(this.getStateConfigure());
+            }
         };
 
         /**
@@ -241,8 +245,8 @@ define(
                  * 按钮对应状态的样式配置对象。
                  *
                  * @type LoaderButton.Configure
-                 * @param {string=} iconClass
-                 * @param {string=} text
+                 * @property {string=} iconClass
+                 * @property {string=} text
                  */
                 obj[LoaderButton.State.NORMAL] = {};
                 obj[LoaderButton.State.LOADING] = {};
