@@ -1,4 +1,4 @@
-define(['jquery'], function ($) {
+define(['jquery', 'app/common'], function ($, Common) {
     'use strict';
 
     /**
@@ -7,7 +7,8 @@ define(['jquery'], function ($) {
      * @class
      * @constructor
      * @param {object} options 配置对象，如果不指定该参数，则使用Cache.defaults默认配置对象。
-     * @param {number} options.invalidSeconds 缓存过期时间（秒）。
+     * @param {number} options.invalidMilliseconds 缓存项的有效毫秒数。
+     * @param {string} options.prefix 缓存键的前缀。
      * @exports cache
      */
     function Cache(options) {
@@ -17,6 +18,30 @@ define(['jquery'], function ($) {
     }
 
     /**
+     * 缓存的默认配置，当实例化Cache类不指定config参数时将使用默认配置。
+     *
+     * @property {number} invalidMilliseconds 缓存项的有效毫秒数，默认为1800000毫秒。
+     * @property {string} prefix 缓存键的前缀，默认为'cache.'。
+     */
+    Cache.defaults = {
+        invalidMilliseconds: 30 * 60 * 1000,
+        prefix: 'cache.'
+    };
+
+    /**
+     * 将key与配置的前缀字符串拼接，产生对应在缓存中的键。
+     * @param {string} key 除前缀部分以外的缓存键。
+     * @return {string} 若前缀存在，返回前缀与key拼接的结果，否则返回key。
+     */
+    Cache.prototype.compileKey = function (key) {
+        var prefix = this.options.prefix;
+        if (Common.String.isNullOrEmpty(prefix) === false) {
+            return prefix + key;
+        }
+        return key;
+    };
+
+    /**
      * 通过key获取已缓存的值，缓存过期返回null并会被移除，否则返回缓存的值。
      *
      * @public
@@ -24,12 +49,13 @@ define(['jquery'], function ($) {
      * @return {Object|null} 被缓存的值，如果缓存过期则返回null。
      */
     Cache.prototype.get = function (key) {
-        if (key in window.localStorage == true) {
-            var value = window.localStorage.getItem(key);
-            if (value != undefined) {
+        key = this.compileKey(key);
+        if (key in localStorage == true) {
+            var value = localStorage.getItem(key);
+            if (typeof value !== 'undefined') {
                 value = JSON.parse(value);
-                if (value.invalidtime != 0
-                    && value.invalidtime < new Date().getTime()
+                if (value.invalidTime != 0
+                    && value.invalidTime < new Date().getTime()
                 ) {
                     this.remove(key);
                     return null;
@@ -49,38 +75,40 @@ define(['jquery'], function ($) {
      * @param {string} key 缓存的键。
      * @param {*} value 缓存的值。
      * @param {Object=} options 本次设置使用的配置，优先级高于实例的配置。
-     * @param {number} options.invalidSeconds 缓存过期时间（秒），0为永不过期，设为永不过期的缓存项只能通过调用remove或removeAll清除。
+     * @param {number} options.invalidMilliseconds 缓存项的有效毫秒数，0为永不过期，设为永不过期的缓存项只能通过调用remove或removeAll清除。
+     * @param {string} options.prefix 缓存键的前缀。
      * @return {boolean} 是否成功加入缓存，成功返回true，否则返回false。
      */
     Cache.prototype.set = function (key, value, options) {
-        if (key == undefined) {
+        if (typeof key === 'undefined') {
             return false;
         }
 
-        if (options == undefined) {
+        if (options == null) {
             options = {};
         }
 
         var opts = $.extend({}, this.options, options);
+        key = this.compileKey(key);
 
         var val = {
-            'invalidtime': new Date().getTime(),
-            'obj': value
+            invalidTime: new Date().getTime(),
+            obj: value
         };
-        if (isNaN(opts.invalidSeconds) == false) {
-            if (opts.invalidSeconds == 0) {
-                val.invalidtime = 0;
+        // 过期时间无效时不设置。
+        if (Number.isNaN(opts.invalidMilliseconds) === false) {
+            if (opts.invalidMilliseconds === 0) {
+                val.invalidTime = 0;
             }
             else {
-                val.invalidtime += (opts.invalidSeconds * 1000);
+                val.invalidTime += opts.invalidMilliseconds;
             }
-        }
-        else {
-            val.invalidtime += (opts.invalidSeconds * 1000);
+
+            localStorage.setItem(key, JSON.stringify(val));
+            return true;
         }
 
-        window.localStorage.setItem(key, JSON.stringify(val));
-        return true;
+        return false;
     };
 
     /**
@@ -91,9 +119,10 @@ define(['jquery'], function ($) {
      * @return {boolean} 返回(key in window.localStorage)的值。
      */
     Cache.prototype.remove = function (key) {
-        if (key in window.localStorage == true) {
-            window.localStorage.removeItem(key);
-            return key in window.localStorage == false;
+        key = this.compileKey(key);
+        if (key in localStorage == true) {
+            localStorage.removeItem(key);
+            return (key in localStorage) === false;
         }
 
         return true;
@@ -103,39 +132,31 @@ define(['jquery'], function ($) {
      * 从缓存中移除所有与参数匹配的项。
      *
      * @public
-     * @param {RegExp=} reg 一个指定要删除项的正则表达式，如果为null，默认为/.+/。
+     * @param {RegExp=} regexp 一个指定要删除项的正则表达式，如果为null，默认删除所有使用配置的前缀作为开头的缓存。
      * @return {number} 移除项的数量。
      */
-    Cache.prototype.removeAll = function (reg) {
+    Cache.prototype.removeAll = function (regexp) {
         var removeCount = 0;
 
-        if (typeof reg === 'undefined') {
-            reg = /.+/;
+        if (typeof regexp === 'undefined') {
+            var prefix = this.options.prefix;
+            if (Common.String.isNullOrEmpty(prefix) === false) {
+                regexp = new RegExp('^' + prefix + '.+');
+            }
+            else {
+                return removeCount;
+            }
         }
 
-        var ls = window.localStorage;
-        for (var key in ls) {
-            if (ls.hasOwnProperty(key)) {
-                if (reg.test(key) == true) {
-                    ls.removeItem(key);
-                    removeCount += 1;
-                }
+        for (var key in localStorage) {
+            if (localStorage.hasOwnProperty(key)
+                && regexp.test(key)) {
+                localStorage.removeItem(key);
+                removeCount += 1;
             }
         }
 
         return removeCount;
-    };
-
-    /**
-     * 缓存的默认配置，当实例化Cache类不指定config参数时将使用默认配置。
-     *
-     * 可配置项：
-     * <ul>
-     *        <li>invalidSeconds：缓存过期时间（秒），默认为1800秒。</li>
-     * </ul>
-     */
-    Cache.defaults = {
-        'invalidSeconds': 30 * 60
     };
 
     return Cache;
