@@ -1,40 +1,32 @@
 define(
 	[
 		'jquery',
-		'underscore',
 		'app/common'
 	], 
-	function ($, _, Common) {
+	function ($, Common) {
 		'use strict';
-
-		// Change 'templateSettings'
-		_.templateSettings = {
-			escape: /{%-([\s\S]+?)%}/g,
-			evaluate: /{%([\s\S]+?)%}/g,
-			interpolate : /\{%=([\s\S]+?)%\}/g
-		};
 
 		var initialized = false;
 		/**
 		 * 预编译并保存需要缓存的模板。
 		 *
-		 * @exports templates
+		 * @module templates
 		 */
-		var Templates = {
+		return {
 			/**
 			 * 扫描并缓存带有cache-template属性的模板，并将所有缓存的模板存放到对象上。
 			 * @public
 			 */
-			init: function () {
+			init: function (compiler) {
 				var _this = this;
 
 				if (initialized !== true) {
-					console.log('Initializing and caching templates');
+					console.log('Compiling and caching templates...');
 					var scripts = $('script[type="text/template"][cache-template]');
 					scripts.each(function (index, item) {
 						var id = item.id;
 						var name = id.replace(/^tpl-/, '');
-						var tpl = _.template(item.innerHTML);
+						var tpl = compiler(item.innerHTML);
 						_this.add(name, tpl);
 					});
 
@@ -75,9 +67,5 @@ define(
 				}
 			}
 		};
-
-		Templates.init();
-
-		return Templates;
 	}
 );
