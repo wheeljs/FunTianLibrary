@@ -142,7 +142,7 @@ define(['jquery', 'app/common'], function ($, Common) {
         if (typeof regexp === 'undefined') {
             var prefix = this.options.prefix;
             if (Common.String.isNullOrEmpty(prefix) === false) {
-                regexp = new RegExp('^' + prefix + '.+');
+                regexp = new RegExp('^' + prefix.replace('.', '\\.') + '.+');
             }
             else {
                 return removeCount;
