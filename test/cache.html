@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <title>Test cache.js</title>
+    <link rel="stylesheet" href="unit/qunit-1.18.0.css"/>
+    <script src="unit/qunit-1.18.0.js"></script>
+    <script src="../assets/js/require.js"></script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+    <script>
+        window.addEventListener('load', function () {
+            requirejs.config({
+                baseUrl: '../assets/js/',
+                paths: {
+                    jquery: 'jquery-1.9.1.min'
+                }
+            });
+            require(['app/cache'], function (Cache) {
+                var cache = null;
+                var prefix = 'unit-test.';
+                var holdPrefix = 'unit-test-hold.';
+                QUnit.test('cache-instance', function (assert) {
+                    cache = new Cache({
+                        prefix: prefix
+                    });
+                    assert.ok(cache instanceof Cache, '\'Cache\' is instanceof Cache.');
+                });
+                
+                QUnit.test('cache-set', function (assert) {
+                    cache.set('simple-string', 'hello world');
+                    assert.ok(prefix + 'simple-string' in localStorage, 'Cached a simple-string.');
+                });
+
+                QUnit.test('cache-set-option', function (assert) {
+                    cache.set('string', 'HELLO WORLD', {
+                        invalidMilliseconds: 0,
+                        prefix: holdPrefix
+                    });
+                    assert.ok(holdPrefix + 'string' in localStorage, 'Cached a never expires string.');
+                });
+
+                QUnit.test('cache-get', function (assert) {
+                    var val = cache.get('simple-string');
+                    assert.strictEqual(val, 'hello world', 'Getted simple-string:' + val);
+                });
+
+                QUnit.test('cache-remove', function (assert) {
+                    cache.remove('simple-string');
+                    assert.ok((prefix + 'simple-string' in localStorage) === false, 'Removed simple-string.');
+                });
+
+                QUnit.test('cache-removeAll', function (assert) {
+                    var cnt = cache.removeAll();
+                    assert.ok('unit-test-hold.string' in localStorage, 'Removed cache start with \'unit-test\'');
+                });
+
+            });
+
+        });
+    </script>
+</body>
+</html>
