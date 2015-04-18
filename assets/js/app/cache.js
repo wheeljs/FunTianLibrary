@@ -31,10 +31,11 @@ define(['jquery', 'app/common'], function ($, Common) {
     /**
      * 将key与配置的前缀字符串拼接，产生对应在缓存中的键。
      * @param {string} key 除前缀部分以外的缓存键。
-     * @return {string} 若前缀存在，返回前缀与key拼接的结果，否则返回key。
+     * @param {string=} prefix 可选参数，指定组成键的前缀，优先级高于配置项。
+     * @return {string} 返回前缀与key拼接的结果。
      */
-    Cache.prototype.compileKey = function (key) {
-        var prefix = this.options.prefix;
+    Cache.prototype.compileKey = function (key, prefix) {
+        prefix = prefix || this.options.prefix;
         if (Common.String.isNullOrEmpty(prefix) === false) {
             return prefix + key;
         }
@@ -89,7 +90,7 @@ define(['jquery', 'app/common'], function ($, Common) {
         }
 
         var opts = $.extend({}, this.options, options);
-        key = this.compileKey(key);
+        key = this.compileKey(key, opts.prefix);
 
         var val = {
             invalidTime: new Date().getTime(),
