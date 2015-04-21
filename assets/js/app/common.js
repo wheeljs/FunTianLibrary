@@ -57,7 +57,7 @@
              * @return {boolean} 源字符串为空字符串返回true，否则返回false。
              */
             isNullOrEmpty: function (str) {
-                return str == undefined || str.length == 0;
+                return str == null || str.length === 0;
             }
         }
     };
