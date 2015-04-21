@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <title>Test common.js</title>
+    <link rel="stylesheet" href="unit/qunit-1.18.0.css"/>
+    <script src="unit/qunit-1.18.0.js"></script>
+    <script src="../assets/js/require.js"></script>
+    <script src="requirejs-config.js"></script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+    <script>
+        window.addEventListener('load', function () {
+
+            require(['app/common'], function (Common) {
+                function prepare() {
+                    this.Common = Common;
+                }
+
+                QUnit.module('common', {
+                    setup: prepare,
+                    beforeEach: prepare
+                });
+
+                QUnit.test('createEvent', function (assert) {
+                    var evt = this.Common.createEvent('listLoaded', true, true);
+                    console.group('createEvent');
+                    console.dir(evt);
+                    console.groupEnd();
+                    assert.ok(evt instanceof Event, 'Created event used \'createEvent\'.');
+                });
+
+                QUnit.test('createEvent-data', function (assert) {
+                    var evt = this.Common.createEvent('listLoaded', true, true, {
+                        result: [3, 5, 92, 21, 2]
+                    });
+                    console.group('createEvent-data');
+                    console.dir(evt);
+                    console.groupEnd();
+                    assert.ok(evt instanceof Event, 'Created event and transfer data used \'createEvent\'.');
+                });
+
+                QUnit.module('commom.String', {
+                    setup: prepare,
+                    beforeEach: prepare
+                });
+
+                QUnit.test('not-null-string', function (assert) {
+                    var Common = this.Common;
+                    assert.ok(Common.String.isNullOrEmpty('hello world') === false, '\'hello world\' is not a empty string.');
+                });
+
+                QUnit.test('null-string', function (assert) {
+                    var Common = this.Common;
+                    assert.ok(Common.String.isNullOrEmpty(null), 'Object null is a empty string.');
+                });
+
+                QUnit.test('white-space-string', function (assert) {
+                    var Common = this.Common;
+                    assert.ok(Common.String.isNullOrEmpty('     ') === false, '\'     \' is not a empty string.If you want to detect it, you should use \'String#trim\'');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
