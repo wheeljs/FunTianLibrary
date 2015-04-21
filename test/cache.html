@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="unit/qunit-1.18.0.css"/>
     <script src="unit/qunit-1.18.0.js"></script>
     <script src="../assets/js/require.js"></script>
+    <script src="requirejs-config.js"></script>
 </head>
 <body>
     <div id="qunit"></div>
@@ -13,12 +14,6 @@
 
     <script>
         window.addEventListener('load', function () {
-            requirejs.config({
-                baseUrl: '../assets/js/',
-                paths: {
-                    jquery: 'jquery-1.9.1.min'
-                }
-            });
             require(['app/cache'], function (Cache) {
                 var prefix = 'unit-test.';
                 var holdPrefix = 'unit-test-hold.';
