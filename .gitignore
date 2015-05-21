@@ -2,3 +2,4 @@
 .idea
 /doc-gen.bat
 /compile-file.bat
+/jshint-check.bat
