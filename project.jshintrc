@@ -1,0 +1,7 @@
+{
+	"curly": true,
+	"eqeqeq": true,
+	"eqnull": true,
+	"forin": true,
+	"laxbreak": true
+}
