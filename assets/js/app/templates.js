@@ -41,7 +41,7 @@ define(
 			 * @return {boolean} 模板名称为有效名称时返回true，否则返回false。
 			 */
 			isValidName: function (name) {
-				return Common.String.isNullOrEmpty(name) == false;
+				return Common.String.isNullOrEmpty(name) === false;
 			},
 			/**
 			 * 将模板添加到缓存中。

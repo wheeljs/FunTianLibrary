@@ -43,7 +43,7 @@
                 return;
             }
             var ns = this.getNamespace(namespace);
-            if (ns == undefined) {
+            if (ns == null) {
                 ns = {};
                 this.setNamespace(namespace, ns);
             }
@@ -81,7 +81,7 @@
                     break;
             }
 
-            if (nsobj != undefined) {
+            if (nsobj != null) {
                 delete nsobj[key];
             }
         }

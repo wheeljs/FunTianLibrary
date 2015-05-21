@@ -51,11 +51,11 @@ define(['jquery', 'app/common'], function ($, Common) {
      */
     Cache.prototype.get = function (key) {
         key = this.compileKey(key);
-        if (key in localStorage == true) {
+        if (key in localStorage === true) {
             var value = localStorage.getItem(key);
             if (typeof value !== 'undefined') {
                 value = JSON.parse(value);
-                if (value.invalidTime != 0
+                if (value.invalidTime !== 0
                     && value.invalidTime < new Date().getTime()
                 ) {
                     this.remove(key);
@@ -121,7 +121,7 @@ define(['jquery', 'app/common'], function ($, Common) {
      */
     Cache.prototype.remove = function (key) {
         key = this.compileKey(key);
-        if (key in localStorage == true) {
+        if (key in localStorage === true) {
             localStorage.removeItem(key);
             return (key in localStorage) === false;
         }

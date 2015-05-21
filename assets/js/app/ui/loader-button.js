@@ -31,7 +31,7 @@ define(
             var _this = this;
             var opts = this.options;
 
-            if (this instanceof Window == true) {
+            if (this instanceof Window === true) {
                 return new LoaderButton(element, options);
             }
 
@@ -219,7 +219,7 @@ define(
             if (options.triggerAfter !== false) {
                 this.fire('stateChanged', {
                     currentState: newState
-                })
+                });
             }
 
             if (options.render !== false) {
