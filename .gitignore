@@ -3,3 +3,5 @@
 /doc-gen.bat
 /compile-file.bat
 /jshint-check.bat
+/src/main.js
+/index.html
