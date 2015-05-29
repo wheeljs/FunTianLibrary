@@ -5,8 +5,8 @@
 define(
     [
         'jquery',
-        'app/common',
-        'app/ui/ui-base'
+        '..//common',
+        '..//ui/ui-base'
     ],
     function ($, Common, UIBase) {
         'use strict';

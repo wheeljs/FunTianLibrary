@@ -5,7 +5,7 @@
     <title>Test cache.js</title>
     <link rel="stylesheet" href="unit/qunit-1.18.0.css"/>
     <script src="unit/qunit-1.18.0.js"></script>
-    <script src="../assets/js/require.js"></script>
+    <script src="../src/require.js"></script>
     <script src="requirejs-config.js"></script>
 </head>
 <body>
@@ -14,7 +14,7 @@
 
     <script>
         window.addEventListener('load', function () {
-            require(['app/cache'], function (Cache) {
+            require(['../src/app/cache'], function (Cache) {
                 var prefix = 'unit-test.';
                 var holdPrefix = 'unit-test-hold.';
                 QUnit.module('cache', {

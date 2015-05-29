@@ -5,7 +5,7 @@
 define(
     [
         'jquery',
-        'app/common'
+        '..//common'
     ],
     function ($, Common) {
        'use strict';

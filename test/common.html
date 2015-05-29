@@ -5,7 +5,7 @@
     <title>Test common.js</title>
     <link rel="stylesheet" href="unit/qunit-1.18.0.css"/>
     <script src="unit/qunit-1.18.0.js"></script>
-    <script src="../assets/js/require.js"></script>
+    <script src="../src/require.js"></script>
     <script src="requirejs-config.js"></script>
 </head>
 <body>
@@ -15,7 +15,7 @@
     <script>
         window.addEventListener('load', function () {
 
-            require(['app/common'], function (Common) {
+            require(['../src/app/common'], function (Common) {
                 function prepare() {
                     this.Common = Common;
                 }
