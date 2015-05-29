@@ -1,4 +1,4 @@
-define(['jquery', '/common'], function ($, Common) {
+define(['jquery', 'app/common'], function ($, Common) {
     'use strict';
 
     /**

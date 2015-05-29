@@ -1,4 +1,4 @@
-﻿define(['/common'], function (Common) {
+﻿define(['app/common'], function (Common) {
     'use strict';
 
     /**
