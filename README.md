@@ -2,29 +2,34 @@
 
 ---
 
-## 简介
+## 1 简介
 
 该项目主要用来将开发中常用的库和工具进行封装。
 （现仅）支持使用基于 `AMD` 模块规范的 `requirejs` 作为加载器。
-项目中部分工具依赖第三方库实现，具体请查看 [工具](#工具) 部分。
+项目中部分工具依赖第三方库实现，具体请查看 [工具](#2&nbsp;工具) 部分。
 
 
-## 工具
+## 2 工具
+
+### 2.1 简介
 
 该项目主要包含以下工具（简单介绍），如不指明，则文件名即 AMD 模块名称：
 
-- cache.js: 依赖jquery。基于 `localStorage` 的面向简单对象的缓存工具。
-
 - common.js: 包含部分通用的对象和方法。
 
-- loader-button.js: 依赖jquery。使按钮具有状态，可以指定不同状态具有的类样式和文字。
+- cache.js: 依赖jquery。基于 `localStorage` 的面向简单对象的缓存工具。
 
-- template-helper.js: 依赖common。管理模板内常用方法。
+- ui-base.js(ui/ui-base): 依赖jquery, `common`。UI组件基础类，所有UI组件继承自该类。
 
-- templates.js: 依赖common, jquery。在初始化时通过指定编译器编译并缓存带有 `[cache-template]` 属性的模板。
+- loader-button.js(ui/loader-button): 继承自UIBase类。使按钮具有状态，可以指定不同状态具有的类样式和文字。
+
+- templates.js: 依赖jquery, `common`。在初始化时通过指定编译器编译并缓存带有 `[cache-template]` 属性的模板。
+
+- template-helper.js: 依赖 `common`。管理模板内常用方法。
 
 
-## common
+
+### 2.2 common
 
 该模块 `export` 一个对象，主要包含了常用逻辑方法。
 
@@ -44,7 +49,9 @@ console.log(Common.String.isNullOrEmpty(str2)); // output true
 ```
 
 
-## cache
+### 2.3 cache
+
+`export`: `function Cache() {}`
 
 `Cache` 类提供了使用 `localStorage` 管理简单对象的方法，允许指定缓存的过期时间以及缓存前缀。
 
@@ -76,4 +83,92 @@ cache.set('simple-string-3', 'HeLlO wOrLd');
 
 var cnt = cache.removeAll(/simple-string-\d+/); // 从缓存中移除所有键与表达式匹配的项。参数为空指定前缀的，将构造一个以前缀字符串起始的正则表达式进行匹配，否则不会移除任何项
 console.log(cnt); // output 3
+```
+
+### 2.4 ui/ui-base
+
+`export`: `function UIBase() {}`
+
+UI组件的基类，所有UI组件均继承该类。定义常用的UI方法。
+
+#### 方法
+
+`constructor()`: 空构造函数，不应该调用该函数生成UIBase的实例，因为这毫无意义。
+
+`mergeOptions(deepCopy, source, ...others)`: 将others合并到source，并将合并结果设置到实例的options属性，deepCopy指定了是否为深拷贝。子类构造函数中调用该方法合并用户配置和默认配置。
+
+`fire(event, data)`: 触发事件，data指定了事件的数据。如果在配置对象中提供了键为 `on*` 的回调函数，则调用回调函数；否则调用对象持有元素的 `trigger` 方法。
+
+`Object getOptions()`: 获取当前实例的配置对象。
+
+
+### 2.5 ui/loader-button
+
+`export`: `function LoaderButton() {}` 
+
+继承自 `UIBase`，可以切换状态的按钮。
+
+##### 示例
+
+```javascript
+var LoaderButton = require('ui/loader-button');
+
+var loginButton = new LoaderButton($('#js-login-button'), {
+	// 默认配置项定义在LoaderButton.defaults中
+	type: LoaderButton.Types.ALL, // 指定状态更改时切换的类型（仅文字、仅图标或全部）
+	configure: { // 配置状态对应的结果，当切换类型不为全部时，只需要配置对应的项
+		1: {
+			iconClass: 'icon-save',
+			text: 'Click to load'
+		},
+		2: {
+			iconClass: 'icon-spinner icon-spin',
+			text: 'Loading'
+		},
+		4: {
+			iconClass: 'icon-ok',
+			text: 'Finish'
+		}
+	}
+});
+```
+
+
+### 2.6 templates
+
+`export`: `Templates {...}`
+
+管理模板的缓存和预编译。
+
+
+##### 示例
+
+使用Underscore作为模板引擎支持。
+
+传统方式：
+```html
+<script type="text/template" id="tpl-hello">
+	<h1>Hello {{name}}.</h1>
+</script>
+```
+
+```javascript
+_.template($('#tpl-hello').html())({name: 'Mike'});
+```
+
+缓存模板：
+```html
+<script type="text/template" id="tpl-hello" cache-template>
+<!-- 必须设置type="text/template"和cache-template	 -->
+	<h1>Hello {{name}}.</h1>
+</script>
+```
+
+```javascript
+var Templates = require('templates');
+Templates.init(_.template);// 已经将模板缓存
+
+// ...
+
+Templates['hello']({name: 'John'}); // 多次调用，模板从缓存中获取。
 ```
