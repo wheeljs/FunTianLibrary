@@ -17,17 +17,16 @@
             require(['app/cache'], function (Cache) {
                 var prefix = 'unit-test.';
                 var holdPrefix = 'unit-test-hold.';
+
+                function prepare() {
+                    this.cache = new Cache({
+                       prefix: prefix
+                   });
+                }
+
                 QUnit.module('cache', {
-                    setup: function () {
-                        this.cache = new Cache({
-                            prefix: prefix
-                        });
-                    },
-                    beforeEach: function () {
-                        this.cache = new Cache({
-                            prefix: prefix
-                        });
-                    }
+                    setup: prepare,
+                    beforeEach: prepare
                 });
                 
                 QUnit.test('set', function (assert) {
