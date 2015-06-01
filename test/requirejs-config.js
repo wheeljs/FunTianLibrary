@@ -6,7 +6,7 @@
 (function (requirejs) {
     if (typeof requirejs !== 'undefined') {
         requirejs.config({
-            baseUrl: '../assets/js/',
+            baseUrl: '../src/',
             paths: {
                 jquery: 'jquery-1.9.1.min'
             }
