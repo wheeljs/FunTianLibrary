@@ -8,7 +8,8 @@
         requirejs.config({
             baseUrl: '../src/',
             paths: {
-                jquery: 'jquery-1.9.1.min'
+                jquery: 'jquery-1.9.1.min',
+                underscore: '../test/unit/underscore-min'
             }
         });
     }
