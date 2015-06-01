@@ -18,6 +18,10 @@ define(
 			 * @public
 			 */
 			init: function (compiler) {
+                if (typeof compiler === 'undefined') {
+                    console.error('Cannot initialize, cause compiler is invalid.');
+                    return;
+                }
 				var _this = this;
 
 				if (initialized !== true) {
