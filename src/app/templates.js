@@ -10,9 +10,9 @@ define(
 		/**
 		 * 预编译并保存需要缓存的模板。
 		 *
-		 * @module templates
+		 * @exports templates
 		 */
-		return {
+		var Templates = {
 			/**
 			 * 扫描并缓存带有cache-template属性的模板，并将所有缓存的模板存放到对象上。
 			 * @public
@@ -41,7 +41,13 @@ define(
 			 * @return {boolean} 模板名称为有效名称时返回true，否则返回false。
 			 */
 			isValidName: function (name) {
-				return Common.String.isNullOrEmpty(name) === false;
+                if (Common.String.isNullOrEmpty(name) === false) {
+                    var filtered = protectedNames.filter(function (value) {
+                        return value === name;
+                    });
+                    return filtered.length === 0;
+                }
+                return false;
 			},
 			/**
 			 * 将模板添加到缓存中。
@@ -67,5 +73,14 @@ define(
 				}
 			}
 		};
+
+        var protectedNames = [];
+        for (var name in Templates) {
+            if (Templates.hasOwnProperty(name)) {
+                protectedNames.push(name);
+            }
+        }
+
+        return Templates;
 	}
 );
