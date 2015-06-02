@@ -30,6 +30,18 @@
             }
         },
         /**
+         * 删除命名空间及其包含的所有项。
+         *
+         * @param {string} name 已经存在的命名空间名称。
+         * @return {boolean} 删除是否成功。
+         */
+        removeNamespace: function (name) {
+            if (this.getNamespace(name) != null) {
+                delete this[name];
+            }
+            return name in this;
+        },
+        /**
          * 检查命名空间名称是否为有效名称。
          *
          * @private
