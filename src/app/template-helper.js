@@ -96,6 +96,7 @@
          * @public
          * @param {string|Object} namespace 要移除的项的完整路径（Path.To.Item）或命名空间对象。
          * @param {string=} key 要移除的项的键，如果namespace传递了被移除项的完整路径，该参数可以忽略。
+         * @return {boolean} 删除是否成功。
          */
         unRegister: function (namespace, key) {
             var nsobj = null;
@@ -103,7 +104,10 @@
                 case 'string':
                     var nspath = namespace.split(/\./);
                     nsobj = this.getNamespace(nspath[0]);
-                    key = nspath[nspath.length - 1];
+                    if (nspath.length > 1
+                        && typeof key === 'undefined') {
+                        key = nspath[nspath.length - 1];
+                    }
                     break;
                 case 'object':
                     nsobj = namespace;
@@ -113,6 +117,8 @@
             if (nsobj != null) {
                 delete nsobj[key];
             }
+
+            return key in nsobj;
         }
     };
 
