@@ -17,6 +17,8 @@
 [2.5 loader-button](#25-loader-button)
 
 [2.6 templates](#26-templates)
+
+[2.7 template-helper](#27-template-helper)
 		
 
 
@@ -27,7 +29,12 @@
 （现仅）支持使用基于 `AMD` 模块规范的 `requirejs` 作为加载器。
 项目中部分工具依赖第三方库实现，具体请查看 [工具](#2-工具) 部分。
 
+
+
+
 ## 2 工具
+
+
 
 ### 2.1 概览
 
@@ -67,6 +74,7 @@ console.log(Common.String.isNullOrEmpty(str2)); // output true
 ```
 
 
+
 ### 2.3 cache
 
 `export`: `function Cache() {}`
@@ -103,6 +111,8 @@ var cnt = cache.removeAll(/simple-string-\d+/); // 从缓存中移除所有键�
 console.log(cnt); // output 3
 ```
 
+
+
 ### 2.4 ui-base
 
 `namespace`: `ui/`
@@ -120,6 +130,7 @@ UI组件的基类，所有UI组件均继承该类。定义常用的UI方法。
 `fire(event, data)`: 触发事件，data指定了事件的数据。如果在配置对象中提供了键为 `on*` 的回调函数，则调用回调函数；否则调用对象持有元素的 `trigger` 方法。
 
 `Object getOptions()`: 获取当前实例的配置对象。
+
 
 
 ### 2.5 loader-button
@@ -154,6 +165,7 @@ var loginButton = new LoaderButton($('#js-login-button'), {
 	}
 });
 ```
+
 
 
 ### 2.6 templates
@@ -194,3 +206,39 @@ Templates.init(_.template);// 已经将模板缓存
 
 Templates['hello']({name: 'John'}); // 多次调用，模板从缓存中获取。
 ```
+
+
+
+### 2.7 template-helper
+
+`export`: `TemplateHelper {...}`
+
+存储模板中的常用方法。
+
+
+##### 示例
+
+使用Underscore作为模板引擎。
+
+```html
+<script type="text/template" id="tpl-telephone" cache-template>
+    <span style="font-size: 1.25em">Telephone: {%=TemplateHelper.Phone.hideMiddle('13112345678') %}.</span><br/>
+</script>
+```
+
+```javascript
+// 注册函数，将逻辑与模板分离
+TemplateHelper.register('Phone', 'hideMiddle', function (phone) {
+	return phone.replace(/^(1\d{2})(\d{4})(\d{4})$/, '$1****$3');
+});
+
+// 注册变量，该变量可以在所有模板中使用
+TemplateHelper.register('System', 'debugMode', true);
+
+// ...
+_.template(source)({
+	TemplateHelper: TemplateHelper
+});
+```
+
+<span style="font-size: 1.25em">Telephone: 131****5678.</span>
