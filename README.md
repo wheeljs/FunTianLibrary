@@ -50,7 +50,7 @@
 
 - [templates.js](#26-templates): 依赖jquery, `common`。在初始化时通过指定编译器编译并缓存带有 `[cache-template]` 属性的模板。
 
-- template-helper.js: 依赖 `common`。管理模板内常用方法。
+- [template-helper.js](#27-template-helper): 依赖 `common`。管理模板内常用方法。
 
 
 
