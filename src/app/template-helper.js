@@ -4,9 +4,9 @@
     /**
      * 为模板提供帮助方法。
      *
-     * @module template-helper
+     * @exports template-helper
      */
-    return {
+    var TemplateHelper = {
         /**
          * 根据名称获取相应命名空间对象。
          *
@@ -15,8 +15,7 @@
          * @return {Object|null} 命名空间对象。
          */
         getNamespace: function (name) {
-            var namespace = this[name];
-            return namespace;
+            return this[name];
         },
         /**
          * 设置命名空间对象。
@@ -26,7 +25,25 @@
          * @param {Object} nsobj 命名空间对象。
          */
         setNamespace: function (name, nsobj) {
-            this[name] = nsobj;
+            if (this.isValidName(name)) {
+                this[name] = nsobj;
+            }
+        },
+        /**
+         * 检查命名空间名称是否为有效名称。
+         *
+         * @private
+         * @param {string} name 模板的名称。
+         * @return {boolean} 模板名称为有效名称时返回true，否则返回false。
+         */
+        isValidName: function (name) {
+            if (Common.String.isNullOrEmpty(name) === false) {
+                var filtered = methodNames.filter(function (value) {
+                    return value === name;
+                });
+                return filtered.length === 0;
+            }
+            return false;
         },
         /**
          * 在命名空间中添加一项。
@@ -86,4 +103,13 @@
             }
         }
     };
+
+    var methodNames = [];
+    for (var name in TemplateHelper) {
+        if (TemplateHelper.hasOwnProperty(name)) {
+            methodNames.push(name);
+        }
+    }
+
+    return TemplateHelper;
 });
