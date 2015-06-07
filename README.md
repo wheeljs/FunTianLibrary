@@ -4,21 +4,23 @@
 
 [1 简介](#1-简介)
 
-[2 工具](#2-工具)
+[2 使用](#2-使用)
 
-[2.1 概览](#21-概览)
+[3 工具](#3-工具)
+
+[3.1 概览](#31-概览)
 		
-[2.2 common](#22-common)
+[3.2 common](#32-common)
 	
-[2.3 cache](#23-cache)
+[3.3 cache](#33-cache)
 
-[2.4 ui-base](#24-ui-base)
+[3.4 ui-base](#34-ui-base)
 
-[2.5 loader-button](#25-loader-button)
+[3.5 loader-button](#35-loader-button)
 
-[2.6 templates](#26-templates)
+[3.6 templates](#26-templates)
 
-[2.7 template-helper](#27-template-helper)
+[3.7 template-helper](#37-template-helper)
 		
 
 
@@ -26,37 +28,49 @@
 ## 1 简介
 
 该项目主要用来将开发中常用的库和工具进行封装。
-（现仅）支持使用基于 `AMD` 模块规范的 `requirejs` 作为加载器。
-项目中部分工具依赖第三方库实现，具体请查看 [工具](#2-工具) 部分。
+支持使用基于 `AMD` 模块规范的 `requirejs` 作为加载器或直接引入 `fun-library-x.x[-min].js`。
+项目中部分工具依赖第三方库实现，具体请查看 [工具](#3-工具) 部分。
 
 
 
 
-## 2 工具
+## 2 使用
+
+
+`AMD`: `require('fun')`
+
+或者
+
+`<script src="path/to/fun.js"></script>`
 
 
 
-### 2.1 概览
 
-该项目主要包含以下工具，如不指明，则文件名即 AMD 模块名称：
+## 3 工具
+
+
+
+### 3.1 概览
+
+该项目主要包含以下工具：
 
 - [common.js](#22-common): 包含部分通用的对象和方法。
 
-- [cache.js](#23-cache): 依赖jquery。基于 `localStorage` 的面向简单对象的缓存工具。
+- [cache.js](#23-cache): 基于 `localStorage` 的面向简单对象的缓存工具。
 
-- [ui/ui-base.js](#24-ui-base): 依赖jquery, `common`。UI组件基础类，所有UI组件继承自该类。
+- [ui/ui-base.js](#24-ui-base): UI组件基础类，所有UI组件继承自该类。
 
 - [ui/loader-button.js](#25-loader-button): 继承自UIBase类。使按钮具有状态，可以指定不同状态具有的类样式和文字。
 
-- [templates.js](#26-templates): 依赖jquery, `common`。在初始化时通过指定编译器编译并缓存带有 `[cache-template]` 属性的模板。
+- [templates.js](#26-templates): 在初始化时通过指定编译器编译并缓存带有 `[cache-template]` 属性的模板。
 
-- [template-helper.js](#27-template-helper): 依赖 `common`。管理模板内常用方法。
+- [template-helper.js](#27-template-helper): 管理模板内常用方法。
 
 
 
-### 2.2 common
+### 3.2 common
 
-该模块 `export` 一个对象，主要包含了常用逻辑方法。
+`export`: `Common {...}`
 
 ##### 示例
 
@@ -75,7 +89,9 @@ console.log(Common.String.isNullOrEmpty(str2)); // output true
 
 
 
-### 2.3 cache
+### 3.3 cache
+
+`dependencies`: `jquery`, `common`
 
 `export`: `function Cache() {}`
 
@@ -113,9 +129,11 @@ console.log(cnt); // output 3
 
 
 
-### 2.4 ui-base
+### 3.4 ui-base
 
 `namespace`: `ui/`
+
+`dependencies`: `jquery`, `common`
 
 `export`: `function UIBase() {}`
 
@@ -133,9 +151,11 @@ UI组件的基类，所有UI组件均继承该类。定义常用的UI方法。
 
 
 
-### 2.5 loader-button
+### 3.5 loader-button
 
 `namespace`: `ui/`
+
+`dependencies`: `jquery`, `ui/ui-base`
 
 `export`: `function LoaderButton() {}` 
 
@@ -168,7 +188,9 @@ var loginButton = new LoaderButton($('#js-login-button'), {
 
 
 
-### 2.6 templates
+### 3.6 templates
+
+`dependencies`: `jquery`, `common`
 
 `export`: `Templates {...}`
 
@@ -209,7 +231,9 @@ Templates['hello']({name: 'John'}); // 多次调用，模板从缓存中获取�
 
 
 
-### 2.7 template-helper
+### 3.7 template-helper
+
+`dependencies`: `common`
 
 `export`: `TemplateHelper {...}`
 
