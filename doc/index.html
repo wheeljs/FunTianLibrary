@@ -43,22 +43,139 @@
 
 
     <section>
-        <article><h1>FunTian Library</h1><hr>
-<h2>简介</h2><p>该项目主要用来将开发中常用的库和工具进行封装，使用基于 <code>AMD</code> 模块规范的 <code>requirejs</code> 作为加载器。
-项目中部分工具依赖第三方库实现，具体请查看 <a href="#工具">工具</a> 部分。</p>
-<h2>工具</h2><p>该项目主要包含以下工具（简单介绍），如不指明，则文件名即 AMD 模块名称：</p>
+        <article><h1>FunTian Library</h1><p><a href="#1-简介">1 简介</a></p>
+<p><a href="#2-使用">2 使用</a></p>
+<p><a href="#3-工具">3 工具</a></p>
+<p><a href="#31-概览">3.1 概览</a></p>
+<p><a href="#32-common">3.2 common</a></p>
+<p><a href="#33-cache">3.3 cache</a></p>
+<p><a href="#34-ui-base">3.4 ui-base</a></p>
+<p><a href="#35-loader-button">3.5 loader-button</a></p>
+<p><a href="#26-templates">3.6 templates</a></p>
+<p><a href="#37-template-helper">3.7 template-helper</a></p>
+<h2>1 简介</h2><p>该项目主要用来将开发中常用的库和工具进行封装。
+支持使用基于 <code>AMD</code> 模块规范的 <code>requirejs</code> 作为加载器或直接引入 <code>fun-library-x.x[-min].js</code>。
+项目中部分工具依赖第三方库实现，具体请查看 <a href="#3-工具">工具</a> 部分。</p>
+<h2>2 使用</h2><p><code>AMD</code>: <code>require('fun')</code></p>
+<p>或者</p>
+<p><code>&lt;script src=&quot;path/to/fun.js&quot;&gt;&lt;/script&gt;</code></p>
+<h2>3 工具</h2><h3>3.1 概览</h3><p>该项目主要包含以下工具：</p>
 <ul>
-<li><p><a href="module-cache.html">cache.js</a>: 依赖jquery。基于 <code>localStorage</code> 的缓存工具。</p>
+<li><p><a href="#22-common">common.js</a>: 包含部分通用的对象和方法。</p>
 </li>
-<li><p><a href="module-common.html">common.js</a>: 通用工具类。</p>
+<li><p><a href="#23-cache">cache.js</a>: 基于 <code>localStorage</code> 的面向简单对象的缓存工具。</p>
 </li>
-<li><p><a href="module-loader-button.html">loader-button.js</a>: 依赖jquery。使按钮具有状态，不同的状态可以显示不同的图标和文字。</p>
+<li><p><a href="#24-ui-base">ui/ui-base.js</a>: UI组件基础类，所有UI组件继承自该类。</p>
 </li>
-<li><p><a href="module-template-helper.html">template-helper.js</a>: 依赖common。模板的帮助方法类。</p>
+<li><p><a href="#25-loader-button">ui/loader-button.js</a>: 继承自UIBase类。使按钮具有状态，可以指定不同状态具有的类样式和文字。</p>
 </li>
-<li><p><a href="module-template.html">templates.js</a>: 依赖common, jquery, underscore。自动编译并缓存需要的模板。</p>
+<li><p><a href="#26-templates">templates.js</a>: 在初始化时通过指定编译器编译并缓存带有 <code>[cache-template]</code> 属性的模板。</p>
 </li>
-</ul></article>
+<li><p><a href="#27-template-helper">template-helper.js</a>: 管理模板内常用方法。</p>
+</li>
+</ul>
+<h3>3.2 common</h3><p><code>export</code>: <code>Common {...}</code></p>
+<h5>示例</h5><pre class="prettyprint source lang-javascript"><code>var Common = require('common');
+var evt = Common.createEvent('customerEvent', true, true, {
+    element: someElement
+});  // 创建一个 `Event` 对象并将其初始化，前三个参数与 `Event` 构造函数意义一致，最后一个参数为可选参数，如果该参数有值，则会被设置在返回的 `Event` 实例的 `data` 属性上。
+
+var str1 = 'Hello World';
+var str2 = '';
+console.log(Common.String.isNullOrEmpty(str1));  // 判断字符串是否为空或者空字符串
+// output false
+console.log(Common.String.isNullOrEmpty(str2)); // output true</code></pre><h3>3.3 cache</h3><p><code>dependencies</code>: <code>jquery</code>, <code>common</code></p>
+<p><code>export</code>: <code>function Cache() {}</code></p>
+<p><code>Cache</code> 类提供了使用 <code>localStorage</code> 管理简单对象的方法，允许指定缓存的过期时间以及缓存前缀。</p>
+<h5>示例</h5><pre class="prettyprint source lang-javascript"><code>var Cache = require('cache');
+var cache = new Cache({
+    invalidMilliseconds: 30 * 60 * 1000, // 缓存项的过期时间，默认为 30 * 60 * 1000 毫秒
+    prefix: 'your.prefix.' // 缓存项的前缀，在调用 set 方法设置缓存时与 key 组合成为缓存的键。默认为 cache.
+});
+
+cache.set('simple-object', {
+    name: 'John',
+    age: 73,
+    gender: 1
+});
+// `your.prefix.simple-object` 即在 `localStorage` 中该项对应的键
+var obj = cache.get('simple-object'); // 通过键取得缓存项的值，如果缓存过期，将返回 `null`。
+console.dir(obj);
+
+cache.remove('simple-object'); // 从缓存中移除该项
+
+cache.set('simple-string-1', 'hello world', {
+    invalidMilliseconds: 0
+});
+cache.set('simple-string-2', 'HELLO WORLD');
+cache.set('simple-string-3', 'HeLlO wOrLd');
+
+var cnt = cache.removeAll(/simple-string-\d+/); // 从缓存中移除所有键与表达式匹配的项。参数为空指定前缀的，将构造一个以前缀字符串起始的正则表达式进行匹配，否则不会移除任何项
+console.log(cnt); // output 3</code></pre><h3>3.4 ui-base</h3><p><code>namespace</code>: <code>ui/</code></p>
+<p><code>dependencies</code>: <code>jquery</code>, <code>common</code></p>
+<p><code>export</code>: <code>function UIBase() {}</code></p>
+<p>UI组件的基类，所有UI组件均继承该类。定义常用的UI方法。</p>
+<h4>方法</h4><p><code>constructor()</code>: 空构造函数，不应该调用该函数生成UIBase的实例，因为这毫无意义。</p>
+<p><code>mergeOptions(deepCopy, source, ...others)</code>: 将others合并到source，并将合并结果设置到实例的options属性，deepCopy指定了是否为深拷贝。子类构造函数中调用该方法合并用户配置和默认配置。</p>
+<p><code>fire(event, data)</code>: 触发事件，data指定了事件的数据。如果在配置对象中提供了键为 <code>on*</code> 的回调函数，则调用回调函数；否则调用对象持有元素的 <code>trigger</code> 方法。</p>
+<p><code>Object getOptions()</code>: 获取当前实例的配置对象。</p>
+<h3>3.5 loader-button</h3><p><code>namespace</code>: <code>ui/</code></p>
+<p><code>dependencies</code>: <code>jquery</code>, <code>ui/ui-base</code></p>
+<p><code>export</code>: <code>function LoaderButton() {}</code> </p>
+<p>继承自 <code>UIBase</code>，可以切换状态的按钮。</p>
+<h5>示例</h5><pre class="prettyprint source lang-javascript"><code>var LoaderButton = require('ui/loader-button');
+
+var loginButton = new LoaderButton($('#js-login-button'), {
+    // 默认配置项定义在LoaderButton.defaults中
+    type: LoaderButton.Types.ALL, // 指定状态更改时切换的类型（仅文字、仅图标或全部）
+    configure: { // 配置状态对应的结果，当切换类型不为全部时，只需要配置对应的项
+        1: {
+            iconClass: 'icon-save',
+            text: 'Click to load'
+        },
+        2: {
+            iconClass: 'icon-spinner icon-spin',
+            text: 'Loading'
+        },
+        4: {
+            iconClass: 'icon-ok',
+            text: 'Finish'
+        }
+    }
+});</code></pre><h3>3.6 templates</h3><p><code>dependencies</code>: <code>jquery</code>, <code>common</code></p>
+<p><code>export</code>: <code>Templates {...}</code></p>
+<p>管理模板的缓存和预编译。</p>
+<h5>示例</h5><p>使用Underscore作为模板引擎支持。</p>
+<p>传统方式：</p>
+<pre class="prettyprint source lang-html"><code>&lt;script type=&quot;text/template&quot; id=&quot;tpl-hello&quot;>
+    &lt;h1>Hello {{name}}.&lt;/h1>
+&lt;/script></code></pre><pre class="prettyprint source lang-javascript"><code>_.template($('#tpl-hello').html())({name: 'Mike'});</code></pre><p>缓存模板：</p>
+<pre class="prettyprint source lang-html"><code>&lt;script type=&quot;text/template&quot; id=&quot;tpl-hello&quot; cache-template>
+&lt;!-- 必须设置type=&quot;text/template&quot;和cache-template     -->
+    &lt;h1>Hello {{name}}.&lt;/h1>
+&lt;/script></code></pre><pre class="prettyprint source lang-javascript"><code>var Templates = require('templates');
+Templates.init(_.template);// 已经将模板缓存
+
+// ...
+
+Templates['hello']({name: 'John'}); // 多次调用，模板从缓存中获取。</code></pre><h3>3.7 template-helper</h3><p><code>dependencies</code>: <code>common</code></p>
+<p><code>export</code>: <code>TemplateHelper {...}</code></p>
+<p>存储模板中的常用方法。</p>
+<h5>示例</h5><p>使用Underscore作为模板引擎。</p>
+<pre class="prettyprint source lang-html"><code>&lt;script type=&quot;text/template&quot; id=&quot;tpl-telephone&quot; cache-template>
+    &lt;span style=&quot;font-size: 1.25em&quot;>Telephone: {%=TemplateHelper.Phone.hideMiddle('13112345678') %}.&lt;/span>&lt;br/>
+&lt;/script></code></pre><pre class="prettyprint source lang-javascript"><code>// 注册函数，将逻辑与模板分离
+TemplateHelper.register('Phone', 'hideMiddle', function (phone) {
+    return phone.replace(/^(1\d{2})(\d{4})(\d{4})$/, '$1****$3');
+});
+
+// 注册变量，该变量可以在所有模板中使用
+TemplateHelper.register('System', 'debugMode', true);
+
+// ...
+_.template(source)({
+    TemplateHelper: TemplateHelper
+});</code></pre><p><span style="font-size: 1.25em">Telephone: 131<em>**</em>5678.</span></p></article>
     </section>
 
 
@@ -66,216 +183,16 @@
 
 
 
-
-
-
-<section>
-
-<header>
-    
-        <h2>
-        ui/loader-button.js
-        </h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">允许切换状态并对不同状态做出不同响应的按钮。</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>FunTian</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_loader-button.js.html">ui/loader-button.js</a>, <a href="ui_loader-button.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>
-        ui/ui-base.js
-        </h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">UI组件的基类，包含部分使用的方法。所有UI组件都继承自该类。</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>FunTian</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_ui-base.js.html">ui/ui-base.js</a>, <a href="ui_ui-base.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cache.html">cache</a></li><li><a href="module-common.html">common</a></li><li><a href="module-loader-button.html">loader-button</a></li><li><a href="module-template-helper.html">template-helper</a></li><li><a href="module-templates.html">templates</a></li><li><a href="module-ui-base.html">ui-base</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-common-String.html">String</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cache.html">cache</a></li><li><a href="module-common.html">common</a></li><li><a href="module-template-helper.html">template-helper</a></li><li><a href="module-templates.html">templates</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-common.String.html">String</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta2</a> on Wed Mar 18 2015 09:43:08 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Sun Jun 07 2015 11:48:54 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line4">line 4</a>
+        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -137,7 +137,7 @@
 
     
 
-    <h4 class="name" id="~_register"><span class="type-signature">(private, inner) </span>_register<span class="signature">(nsobj, key, value)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="._register"><span class="type-signature">(private, static) </span>_register<span class="signature">(nsobj, key, value)</span><span class="type-signature"></span></h4>
 
     
 
@@ -283,7 +283,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line61">line 61</a>
+        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line93">line 93</a>
     </li></ul></dd>
     
 
@@ -314,7 +314,7 @@
 
     
 
-    <h4 class="name" id="~getNamespace"><span class="type-signature">(private, inner) </span>getNamespace<span class="signature">(name)</span><span class="type-signature"> &rarr; {Object|null}</span></h4>
+    <h4 class="name" id=".getNamespace"><span class="type-signature">(private, static) </span>getNamespace<span class="signature">(name)</span><span class="type-signature"> &rarr; {Object|null}</span></h4>
 
     
 
@@ -414,7 +414,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line17">line 17</a>
+        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -470,7 +470,160 @@
 
     
 
-    <h4 class="name" id="~register"><span class="type-signature">(inner) </span>register<span class="signature">(namespace, key, value)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".isValidName"><span class="type-signature">(private, static) </span>isValidName<span class="signature">(name)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    检查命名空间名称是否为有效名称。
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">模板的名称。</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    模板名称为有效名称时返回true，否则返回false。
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".register"><span class="type-signature">(static) </span>register<span class="signature">(namespace, key, value)</span><span class="type-signature"></span></h4>
 
     
 
@@ -616,7 +769,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line39">line 39</a>
+        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line71">line 71</a>
     </li></ul></dd>
     
 
@@ -647,7 +800,160 @@
 
     
 
-    <h4 class="name" id="~setNamespace"><span class="type-signature">(private, inner) </span>setNamespace<span class="signature">(name, nsobj)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".removeNamespace"><span class="type-signature">(static) </span>removeNamespace<span class="signature">(name)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    删除命名空间及其包含的所有项。
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">已经存在的命名空间名称。</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    删除是否成功。
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setNamespace"><span class="type-signature">(private, static) </span>setNamespace<span class="signature">(name, nsobj)</span><span class="type-signature"></span></h4>
 
     
 
@@ -770,7 +1076,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line28">line 28</a>
+        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -801,7 +1107,7 @@
 
     
 
-    <h4 class="name" id="~unRegister"><span class="type-signature">(inner) </span>unRegister<span class="signature">(namespace, key<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".unRegister"><span class="type-signature">(static) </span>unRegister<span class="signature">(namespace, key<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
 
     
 
@@ -947,7 +1253,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line71">line 71</a>
+        <a href="template-helper.js.html">template-helper.js</a>, <a href="template-helper.js.html#line104">line 104</a>
     </li></ul></dd>
     
 
@@ -970,6 +1276,28 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    删除是否成功。
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -989,13 +1317,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cache.html">cache</a></li><li><a href="module-common.html">common</a></li><li><a href="module-loader-button.html">loader-button</a></li><li><a href="module-template-helper.html">template-helper</a></li><li><a href="module-templates.html">templates</a></li><li><a href="module-ui-base.html">ui-base</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-common-String.html">String</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cache.html">cache</a></li><li><a href="module-common.html">common</a></li><li><a href="module-template-helper.html">template-helper</a></li><li><a href="module-templates.html">templates</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-common.String.html">String</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta2</a> on Wed Mar 18 2015 09:43:09 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Sun Jun 07 2015 11:48:55 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>

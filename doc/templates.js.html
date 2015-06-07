@@ -26,89 +26,94 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>define(
-	[
-		'jquery',
-		'underscore',
-		'app/common'
-	], 
-	function ($, _, Common) {
-		'use strict';
+            <pre class="prettyprint source linenums"><code>define([
+    './core',
+    './common',
+    'jquery'
+], function (Fun, Common, $) {
+    'use strict';
 
-		// Change 'templateSettings'
-		_.templateSettings = {
-			escape: /{%-([\s\S]+?)%}/g,
-			evaluate: /{%([\s\S]+?)%}/g,
-			interpolate : /\{%=([\s\S]+?)%\}/g
-		};
+    var initialized = false;
+    /**
+     * 预编译并保存需要缓存的模板。
+     *
+     * @exports templates
+     */
+    var Templates = {
+        /**
+         * 扫描并缓存带有cache-template属性的模板，并将所有缓存的模板存放到对象上。
+         * @public
+         */
+        init: function (compiler) {
+            if (typeof compiler === 'undefined') {
+                console.error('Cannot initialize, cause compiler is invalid.');
+                return;
+            }
+            var _this = this;
 
-		var initialized = false;
-		/**
-		 * 预编译并保存需要缓存的模板。
-		 *
-		 * @exports templates
-		 */
-		var Templates = {
-			/**
-			 * 扫描并缓存带有cache-template属性的模板，并将所有缓存的模板存放到对象上。
-			 * @public
-			 */
-			init: function () {
-				var _this = this;
+            if (initialized !== true) {
+                console.log('Compiling and caching templates...');
+                var scripts = $('script[type="text/template"][cache-template]');
+                scripts.each(function (index, item) {
+                    var id = item.id;
+                    var name = id.replace(/^tpl-/, '');
+                    var tpl = compiler(item.innerHTML);
+                    _this.add(name, tpl);
+                });
 
-				if (initialized !== true) {
-					console.log('Initializing and caching templates');
-					var scripts = $('script[type="text/template"][cache-template]');
-					scripts.each(function (index, item) {
-						var id = item.id;
-						var name = id.replace(/^tpl-/, '');
-						var tpl = _.template(item.innerHTML);
-						_this.add(name, tpl);
-					});
+                initialized = true;
+            }
+        },
+        /**
+         * 检查模板名称是否为有效名称。
+         *
+         * @private
+         * @param {string} name 模板的名称。
+         * @return {boolean} 模板名称为有效名称时返回true，否则返回false。
+         */
+        isValidName: function (name) {
+            if (Common.String.isNullOrEmpty(name) === false) {
+                var filtered = protectedNames.filter(function (value) {
+                    return value === name;
+                });
+                return filtered.length === 0;
+            }
+            return false;
+        },
+        /**
+         * 将模板添加到缓存中。
+         *
+         * @public
+         * @param {string} name 模板在缓存中的名称，唯一标识模板。
+         * @param {function} tpl 编译模板后的函数。
+         */
+        add: function (name, tpl) {
+            if (this.isValidName(name)) {
+                this[name] = tpl;
+            }
+        },
+        /**
+         * 将模板从缓存中删除。
+         *
+         * @public
+         * @param {string} name 模板在缓存中的名称。
+         */
+        remove: function (name) {
+            if (this.isValidName(name)) {
+                delete this[name];
+            }
+        }
+    };
 
-					initialized = true;
-				}
-			},
-			/**
-			 * 检查模板名称是否为有效名称。
-			 *
-			 * @private
-			 * @param {string} name 模板的名称。
-			 * @return {boolean} 模板名称为有效名称时返回true，否则返回false。
-			 */
-			isValidName: function (name) {
-				return Common.String.isNullOrEmpty(name) == false;
-			},
-			/**
-			 * 将模板添加到缓存中。
-			 *
-			 * @public
-			 * @param {string} name 模板在缓存中的名称，唯一标识模板。
-			 * @param {function} tpl 编译模板后的函数。
-			 */
-			add: function (name, tpl) {
-				if (this.isValidName(name)) {
-					this[name] = tpl;
-				}
-			},
-			/**
-			 * 将模板从缓存中删除。
-			 *
-			 * @public
-			 * @param {string} name 模板在缓存中的名称。
-			 */
-			remove: function (name) {
-				if (this.isValidName(name)) {
-					delete this[name];
-				}
-			}
-		};
+    var protectedNames = [];
+    for (var name in Templates) {
+        if (Templates.hasOwnProperty(name)) {
+            protectedNames.push(name);
+        }
+    }
 
-		Templates.init();
-
-		return Templates;
-	}
-);
+    return (Fun.Templates = Templates);
+});
 </code></pre>
         </article>
     </section>
@@ -119,13 +124,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cache.html">cache</a></li><li><a href="module-common.html">common</a></li><li><a href="module-loader-button.html">loader-button</a></li><li><a href="module-template-helper.html">template-helper</a></li><li><a href="module-templates.html">templates</a></li><li><a href="module-ui-base.html">ui-base</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-common-String.html">String</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cache.html">cache</a></li><li><a href="module-common.html">common</a></li><li><a href="module-template-helper.html">template-helper</a></li><li><a href="module-templates.html">templates</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-common.String.html">String</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta2</a> on Wed Mar 18 2015 09:43:08 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Sun Jun 07 2015 11:48:54 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>
