@@ -1,4 +1,8 @@
-define(['jquery', 'app/common'], function ($, Common) {
+define([
+    './core',
+    './common',
+    'jquery'
+], function (Fun, Common, $) {
     'use strict';
 
     /**
@@ -160,5 +164,5 @@ define(['jquery', 'app/common'], function ($, Common) {
         return removeCount;
     };
 
-    return Cache;
+    return (Fun.Cache = Cache);
 });

@@ -1,12 +1,12 @@
-﻿define(function () {
+﻿define(['./core'], function (Fun) {
     'use strict';
 
     /**
      * 通用的处理方法。
      *
-     * @module common
+     * @exports common
      */
-    return {
+    Fun.Common = {
         /**
          * 创建并初始化事件，可以将数据设置到事件对象上。
          *
@@ -61,4 +61,6 @@
             }
         }
     };
+
+    return Fun.Common;
 });

@@ -1,4 +1,7 @@
-﻿define(['app/common'], function (Common) {
+﻿define([
+    './core',
+    './common'
+], function (Fun, Common) {
     'use strict';
 
     /**
@@ -129,5 +132,5 @@
         }
     }
 
-    return TemplateHelper;
+    return (Fun.TemplateHelper = TemplateHelper);
 });
