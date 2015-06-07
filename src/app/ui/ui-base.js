@@ -2,7 +2,6 @@
  * @file UI组件的基类，包含部分使用的方法。所有UI组件都继承自该类。
  * @author FunTian
  */
-//(function (window, Fun, undefined) {
 define([
     '../core',
     '../common',

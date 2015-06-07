@@ -2,7 +2,6 @@
  * @file 允许切换状态并对不同状态做出不同响应的按钮。
  * @author FunTian
  */
-//(function (window, Fun, undefined) {
 define([
     '../core',
     '../common',
