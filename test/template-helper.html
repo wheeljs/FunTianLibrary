@@ -31,7 +31,7 @@
 
     <script>
         window.addEventListener('load', function () {
-            require(['jquery', 'underscore', 'app/templates', 'app/template-helper'],
+            require(['jquery', 'underscore', 'templates', 'template-helper'],
                 function ($, _, Templates, TemplateHelper) {
                     _.templateSettings = {
                         evaluate    : /{%([\s\S]+?)%}/g,

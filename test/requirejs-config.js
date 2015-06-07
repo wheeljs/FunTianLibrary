@@ -6,10 +6,10 @@
 (function (requirejs) {
     if (typeof requirejs !== 'undefined') {
         requirejs.config({
-            baseUrl: '../src/',
+            baseUrl: '../src/app/',
             paths: {
-                jquery: 'jquery-1.9.1.min',
-                underscore: '../test/unit/underscore-min'
+                jquery: '../jquery-1.9.1.min',
+                underscore: '../../test/unit/underscore-min'
             }
         });
     }
