@@ -25,7 +25,7 @@ define([
 
             if (initialized !== true) {
                 console.log('Compiling and caching templates...');
-                var scripts = $('script[type="text/template"][cache-template]');
+                var scripts = $('[cache-template]');
                 scripts.each(function (index, item) {
                     var id = item.id;
                     var name = id.replace(/^tpl-/, '');
