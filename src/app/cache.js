@@ -2,7 +2,7 @@ define([
     './core',
     './common',
     'jquery'
-], function (Fun, Common, $) {
+], function (Fun, Common) {
     'use strict';
 
     /**

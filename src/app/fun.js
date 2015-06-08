@@ -3,17 +3,22 @@
  * @file 将模块所有子模块导出为Fun。
  * @author FunTian
  */
-define(
-    [
-        './core',
-        './common',
-        './cache',
-        './templates',
-        './template-helper',
-        './ui/ui-base',
-        './ui/loader-button'
-    ],
-    function (Fun) {
-        return (window.Fun = Fun);
+(function () {
+    if (typeof define === 'function' && define.amd) {
+        define(
+            [
+                './core',
+                './common',
+                './cache',
+                './templates',
+                './template-helper',
+                './ui/ui-base',
+                './ui/loader-button'
+            ],
+            function (Fun) {
+                return Fun;
+            }
+        );
     }
-);
+})();
+

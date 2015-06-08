@@ -11,7 +11,7 @@ define(function () {
      *
      * @exports Fun
      */
-    return {
+    return (window.Fun = {
         version: '0.1.0'
-    };
+    });
 });
