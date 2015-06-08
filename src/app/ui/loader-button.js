@@ -65,12 +65,13 @@ define([
 
                 if (_this._state === LoaderButton.State.LOADING
                     && _this._proxyPromise == null) {
-                    var promise = _this.options.onLoadExecute();
+                    var promise = _this.options.onLoadExecute.call(_this);
+                    _this._proxyPromise = promise;
+
                     promise.always(function () {
                         _this.setState(LoaderButton.State.FINISHED);
                         _this._proxyPromise = null;
                     });
-                    _this._proxyPromise = promise;
                 }
                 else {
 
